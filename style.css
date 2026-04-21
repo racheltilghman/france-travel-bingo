@@ -30,9 +30,9 @@ h1 {
 
 .cell {
   width: 100%;
-  aspect-ratio: 1 / 1;   /* 🔑 forces perfect square */
+  aspect-ratio: 1 / 1; 
   background: #fffdf9;
-  border-radius: 14px;
+  border-radius: 20px;
 
   display: flex;
   align-items: center;
@@ -47,8 +47,8 @@ h1 {
   border: 1px solid #eee;
   cursor: pointer;
 
-  overflow: hidden;       /* 🔑 prevents growth */
-  word-wrap: break-word;  /* 🔑 keeps text inside */
+  overflow: hidden;     
+  word-wrap: break-word;
   line-height: 1.1;
 }
 
