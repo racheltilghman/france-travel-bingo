@@ -2,64 +2,45 @@ body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   background: linear-gradient(180deg, #f7f3ec, #f1ebe3);
+  text-align: center;
   color: #3d3d3d;
 }
 
-/* App container */
 .app {
   max-width: 420px;
   margin: auto;
   padding: 20px;
 }
 
-/* Header */
-.header {
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-.header h1 {
+h1 {
   font-family: 'Playfair Display', serif;
   color: #7da2b8;
-  font-size: 2em;
-  margin: 0;
+  margin-bottom: 0;
 }
 
-.header p {
+.sub {
+  margin-top: 5px;
   font-size: 0.9em;
   color: #9aaeb8;
-  margin-top: 5px;
 }
 
-/* Input */
 input {
   width: 100%;
   padding: 12px;
   border-radius: 14px;
   border: none;
-  margin-bottom: 15px;
-  font-size: 1em;
+  margin: 15px 0;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-/* Card container */
-.card {
-  background: #fffdf9;
-  border-radius: 24px;
-  padding: 15px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-}
-
-/* Grid */
 .grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
 }
 
-/* Cells */
 .cell {
-  background: #ffffff;
+  background: #fffdf9;
   border-radius: 14px;
   padding: 8px;
   font-size: 0.7em;
@@ -67,13 +48,7 @@ input {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
   border: 1px solid #eee;
-  transition: all 0.2s ease;
-}
-
-.cell:hover {
-  transform: scale(1.05);
 }
 
 .cell.marked {
@@ -81,7 +56,6 @@ input {
   text-decoration: line-through;
 }
 
-/* Button */
 button {
   width: 100%;
   margin-top: 15px;
@@ -90,56 +64,16 @@ button {
   border: none;
   background: #7da2b8;
   color: white;
-  font-size: 1em;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
 }
 
-/* Leaderboard */
-.leaderboard-card {
-  background: #fffdf9;
-  border-radius: 20px;
-  padding: 15px;
-  margin-top: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-}
-
-.leaderboard-card h3 {
-  margin-top: 0;
-}
-
-ul {
-  padding-left: 20px;
-}
-
-/* Overlay */
-#bingoOverlay {
+#overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top:0; left:0;
+  width:100%;
+  height:100%;
   background: rgba(247,243,236,0.95);
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-
-.overlay-content {
-  text-align: center;
-  animation: pop 0.5s ease;
-}
-
-.overlay-content .big {
-  font-size: 4em;
-}
-
-.overlay-content .text {
-  font-size: 1.5em;
-  color: #7da2b8;
-  margin-top: 10px;
-}
-
-@keyframes pop {
-  from { transform: scale(0.7); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:2em;
 }
