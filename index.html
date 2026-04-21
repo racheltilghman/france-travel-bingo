@@ -6,8 +6,6 @@
 
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter&display=swap" rel="stylesheet">
-
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 
 <body>
@@ -17,16 +15,92 @@
   <h1>✈️ Travel Bingo</h1>
   <p class="sub">Paris → Tours → Château ✨</p>
 
-  <input id="name" placeholder="Enter your name" />
-
   <div class="grid" id="grid"></div>
 
-  <button onclick="shareBoard()">📸 Share board</button>
+  <button onclick="shareBoard()">📸 Share</button>
 
 </div>
 
 <div id="overlay">🥂 Santé ! Bravo !</div>
 
-<script src="app.js"></script>
+<script>
+const items = [
+"Someone says bon voyage",
+"Overpriced airport snack",
+"Passport panic",
+"Matching travel outfits",
+"Gate change",
+"See a bird and send Rachel a picture",
+"Tomato juice order",
+"Plane descent hype",
+"Turbulence",
+"First bonjour",
+"Bad French pronunciation",
+"Train confusion",
+"Free space 🇫🇷",
+"Baguette purchase",
+"Eat a croissant",
+"Tiny coffee shock",
+"This is so European",
+"Maps disagreement",
+"Group photo chaos",
+"I could live here",
+"Cobblestone struggle",
+"Wine before noon",
+"Hear a first impression gasp",
+"Airplane selfie",
+"First glass of wine at the chateau"
+];
+
+function shuffle(arr){
+  return arr.sort(() => Math.random() - 0.5);
+}
+
+const grid = document.getElementById("grid");
+let cells = [];
+
+function buildBoard(){
+  const shuffled = shuffle([...items]);
+
+  shuffled.forEach(text => {
+    const div = document.createElement("div");
+    div.className = "cell";
+    div.innerText = text;
+
+    if (text.includes("Free")) div.classList.add("marked");
+
+    div.onclick = () => {
+      div.classList.toggle("marked");
+      checkWin();
+    };
+
+    grid.appendChild(div);
+    cells.push(div);
+  });
+}
+
+function checkWin(){
+  const patterns = [
+    [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],
+    [15,16,17,18,19],[20,21,22,23,24],
+    [0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],
+    [3,8,13,18,23],[4,9,14,19,24],
+    [0,6,12,18,24],[4,8,12,16,20]
+  ];
+
+  for (let p of patterns){
+    if (p.every(i => cells[i].classList.contains("marked"))){
+      document.getElementById("overlay").style.display = "flex";
+    }
+  }
+}
+
+function shareBoard(){
+  alert("Screenshot this 📸");
+}
+
+buildBoard();
+</script>
+
 </body>
 </html>
