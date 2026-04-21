@@ -49,13 +49,11 @@
     text-decoration: line-through;
   }
 
-  /* CENTER TILE = LOCKED */
   .center {
     background: #d9ecff;
     font-size: 26px;
-    cursor: default;
-    pointer-events: none; /* hard lock interaction */
     border: 2px solid #7fb3ff;
+    cursor: default;
   }
 
   .popup {
@@ -73,12 +71,6 @@
     border-radius: 16px;
     text-align: center;
     max-width: 300px;
-    animation: pop 0.3s ease;
-  }
-
-  @keyframes pop {
-    from { transform: scale(0.7); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
   }
 
   button {
@@ -137,12 +129,16 @@ const items = [
   "First glass of wine at the chateau"
 ];
 
+// shuffle
 function shuffle(a) {
   return a.sort(() => Math.random() - 0.5);
 }
 
 let boardData = shuffle([...items]).slice(0, 24);
-let selected = Array(25).fill(false); selected[12] = true;
+
+// IMPORTANT: free space is ALWAYS selected
+let selected = Array(25).fill(false);
+selected[12] = true;
 
 const board = document.getElementById("board");
 
@@ -153,11 +149,12 @@ function render() {
   for (let i = 0; i < 25; i++) {
     const cell = document.createElement("div");
 
-      if (i === 12) {
-  cell.className = "cell center";
-  cell.innerText = "🇫🇷";
-  selected[i] = true;
-}
+    if (i === 12) {
+      cell.className = "cell center selected";
+      cell.innerText = "🇫🇷";
+    } else {
+      cell.className = "cell";
+      cell.innerText = boardData[itemIndex++];
 
       if (selected[i]) cell.classList.add("selected");
 
@@ -189,7 +186,8 @@ function checkBingo() {
   ];
 
   for (let pattern of winPatterns) {
-    if (pattern.every(i => selected[i])) {
+    const win = pattern.every(i => i === 12 || selected[i]);
+    if (win) {
       document.getElementById("popup").style.display = "flex";
       return;
     }
