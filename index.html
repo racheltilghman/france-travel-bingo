@@ -1,224 +1,209 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Château Travel Bingo ✨</title>
 
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Inter&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #e6f2ff, #ffe6f0);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    max-width: 420px;
+    width: 100%;
+  }
+
+  .cell {
+    aspect-ratio: 1;
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: 0.2s;
+  }
+
+  .cell.selected {
+    background: #ffd6e7;
+    text-decoration: line-through;
+  }
+
+  .center {
+    background: #d9ecff;
+    font-size: 26px;
+    cursor: default;
+  }
+
+  .popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 300px;
+    animation: pop 0.3s ease;
+  }
+
+  @keyframes pop {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 10px;
+    background: black;
+    color: white;
+    cursor: pointer;
+  }
+</style>
 </head>
 
 <body>
 
-<div class="app">
+<h1>✈️ Travel Bingo</h1>
 
-  <h1>✨ Château Travel Bingo ✨</h1>
-  <p class="sub">Bienvenue!</p>
+<div class="board" id="board"></div>
 
-  <div class="grid" id="grid"></div>
-
-  <button onclick="shareBoard()">📸 Share</button>
-
-</div>
-
-<!-- WIN OVERLAY -->
-<div id="overlay">
-  <div class="win-card">
-    <div class="glasses">🥂🥂</div>
-    <div class="text">Santé ! Bravo !</div>
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <div style="font-size: 28px;">🥂✨</div>
+    <h2>Félicitations!</h2>
+    <p>Take a selfie wherever you are on your journey, and send it to the group!</p>
+    <button onclick="closePopup()">Continue</button>
   </div>
 </div>
-
-<!-- subtle clink sound -->
-<audio id="clink" src="https://www.soundjay.com/glass/glass-clink-1.mp3"></audio>
 
 <script>
 const items = [
-"Someone says bon voyage",
-"Purchased an overpriced airport snack",
-"Passport panic",
-"Spotted: Matching travel outfits",
-"Gate change",
-"See a bird and send Rachel a picture",
-"Witness Weird airplane behavior",
-"Window Seat",
-"Turbulence",
-"Your first Bonjour",
-"Attempt a French pronunciation",
-"Train confusion",
-"French café moment",
-"Films Reel/TikTok content",
-"Eat a croissant",
-"Screams HOW CUTE",
-"This is so European",
-"Maps disagreement",
-"Group photo chaos",
-"I could live here",
-"Cobblestone struggle",
-"Wine before noon",
-"Hear a first impression gasp",
-"Airplane selfie",
-"First glass of wine at the chateau"
+  "Someone says bon voyage",
+  "Purchased an overpriced airport snack",
+  "Passport panic",
+  "Spotted: Matching travel outfits",
+  "Gate change",
+  "See a bird and send Rachel a picture",
+  "Witness Weird airplane behavior",
+  "Window Seat",
+  "Turbulence",
+  "Your first Bonjour",
+  "Attempt a French pronunciation",
+  "Train confusion",
+  "French café moment",
+  "Films Reel/TikTok content",
+  "Eat a croissant",
+  "Screams HOW CUTE",
+  "This is so European",
+  "Maps disagreement",
+  "Group photo chaos",
+  "I could live here",
+  "Cobblestone struggle",
+  "Wine before noon",
+  "Hear a first impression gasp",
+  "Airplane selfie",
+  "First glass of wine at the chateau"
 ];
 
-function shuffle(a){
+// shuffle
+function shuffle(a) {
   return a.sort(() => Math.random() - 0.5);
 }
 
-const grid = document.getElementById("grid");
-let cells = [];
+let boardData = shuffle([...items]).slice(0, 24);
 
-/* Build board */
-function buildBoard(){
-  const shuffled = shuffle([...items]);
+let selected = Array(25).fill(false);
 
-  let index = 0;
+const board = document.getElementById("board");
+
+// build board
+function render() {
+  board.innerHTML = "";
+
+  let itemIndex = 0;
 
   for (let i = 0; i < 25; i++) {
+    const cell = document.createElement("div");
 
-    const div = document.createElement("div");
-    div.className = "cell";
-
-    // CENTER FREE SPACE ALWAYS
     if (i === 12) {
-      div.innerHTML = "🇫🇷<br>FREE";
-      div.classList.add("free");
-      div.classList.add("marked");
-      cells.push(div);
-      grid.appendChild(div);
-      continue;
+      cell.className = "cell center";
+      cell.innerText = "🇫🇷";
+    } else {
+      cell.className = "cell";
+      cell.innerText = boardData[itemIndex++];
+      if (selected[i]) cell.classList.add("selected");
+
+      cell.onclick = () => {
+        selected[i] = !selected[i];
+        render();
+        checkBingo();
+      };
     }
 
-    div.innerText = shuffled[index++];
-    
-    div.onclick = () => {
-      div.classList.toggle("marked");
-      checkWin();
-    };
-
-    grid.appendChild(div);
-    cells.push(div);
+    board.appendChild(cell);
   }
 }
 
-/* WIN CHECK */
-function checkWin(){
-  const patterns = [
-    [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],
-    [15,16,17,18,19],[20,21,22,23,24],
-    [0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],
-    [3,8,13,18,23],[4,9,14,19,24],
-    [0,6,12,18,24],[4,8,12,16,20]
+function checkBingo() {
+  const winPatterns = [
+    [0,1,2,3,4],
+    [5,6,7,8,9],
+    [10,11,12,13,14],
+    [15,16,17,18,19],
+    [20,21,22,23,24],
+    [0,5,10,15,20],
+    [1,6,11,16,21],
+    [2,7,12,17,22],
+    [3,8,13,18,23],
+    [4,9,14,19,24],
+    [0,6,12,18,24],
+    [4,8,12,16,20]
   ];
 
-  for (let p of patterns){
-    if (p.every(i => cells[i].classList.contains("marked"))){
-      win();
+  for (let pattern of winPatterns) {
+    if (pattern.every(i => selected[i])) {
+      document.getElementById("popup").style.display = "flex";
+      return;
     }
   }
 }
 
-/* WIN ANIMATION */
-function win(){
-  document.getElementById("overlay").style.display = "flex";
-  document.getElementById("clink").play();
-
-  // auto hide after a moment
-  setTimeout(() => {
-    document.getElementById("overlay").style.display = "none";
-  }, 3500);
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
 }
 
-function shareBoard(){
-  alert("Take a selfie whereever you are when you win! 📸✨");
-}
-
-buildBoard();
+render();
 </script>
 
 </body>
-
-  <script>
-const items = [
-"Someone says bon voyage", "Purchased an overpriced airport snack", "Passport panic", "Spotted: Matching travel outfits", "Gate change", "See a bird and send Rachel a picture", "Witness Weird airplane behavior", "Window Seat", "Turbulence", "Your first Bonjour", "Attempt a French pronunciation", "Train confusion", "French café moment", "Films Reel/TikTok content", "Eat a croissant", "Screams HOW CUTE", "This is so European", "Maps disagreement", "Group photo chaos", "I could live here", "Cobblestone struggle", "Wine before noon", "Hear a first impression gasp", "Airplane selfie", "First glass of wine at the chateau"
-];
-
-function shuffle(a){
-  return a.sort(() => Math.random() - 0.5);
-}
-
-const grid = document.getElementById("grid");
-let cells = [];
-
-function buildBoard(){
-  const shuffled = shuffle([...items]);
-  let index = 0;
-
-  for (let i = 0; i < 25; i++) {
-    const div = document.createElement("div");
-    div.className = "cell";
-
-    if (i === 12) {
-      div.innerHTML = "<span>🇫🇷 FREE</span>";
-      div.classList.add("marked");
-      grid.appendChild(div);
-      cells.push(div);
-      continue;
-    }
-
-    div.innerHTML = `<span>${shuffled[index++]}</span>`;
-
-    div.onclick = () => {
-      div.classList.toggle("marked");
-      checkWin();
-    };
-
-    grid.appendChild(div);
-    cells.push(div);
-  }
-}
-
-function checkWin(){
-  const patterns = [
-    [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],
-    [15,16,17,18,19],[20,21,22,23,24],
-    [0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],
-    [3,8,13,18,23],[4,9,14,19,24],
-    [0,6,12,18,24],[4,8,12,16,20]
-  ];
-
-  for (let p of patterns){
-    if (p.every(i => cells[i].classList.contains("marked"))){
-      document.getElementById("overlay").style.display = "flex";
-    }
-  }
-}
-
-function shareBoard(){
-  alert("Screenshot this 📸");
-}
-
-buildBoard();
-</script>
 </html>
-<body>
-
-<div class="app">
-
-  <h1>✨ Château Travel Bingo ✨</h1>
-  <p class="sub">Paris → Tours → Château</p>
-
-  <div class="grid" id="grid"></div>
-
-  <button onclick="shareBoard()">📸 Share</button>
-
-</div>
-
-<div id="overlay">
-  <div class="win-card">
-    <div class="glasses">🥂🥂</div>
-    <div class="text">Santé ! Bravo !</div>
-  </div>
-</div>
-
-</body>
