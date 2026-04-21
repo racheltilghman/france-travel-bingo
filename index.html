@@ -137,4 +137,67 @@ buildBoard();
 </script>
 
 </body>
+
+  <script>
+const items = [
+"Someone says bon voyage", "Purchased an overpriced airport snack", "Passport panic", "Spotted: Matching travel outfits", "Gate change", "See a bird and send Rachel a picture", "Witness Weird airplane behavior", "Window Seat", "Turbulence", "Your first Bonjour", "Attempt a French pronunciation", "Train confusion", "French café moment", "Films Reel/TikTok content", "Eat a croissant", "Screams HOW CUTE", "This is so European", "Maps disagreement", "Group photo chaos", "I could live here", "Cobblestone struggle", "Wine before noon", "Hear a first impression gasp", "Airplane selfie", "First glass of wine at the chateau"
+];
+
+function shuffle(a){
+  return a.sort(() => Math.random() - 0.5);
+}
+
+const grid = document.getElementById("grid");
+let cells = [];
+
+function buildBoard(){
+  const shuffled = shuffle([...items]);
+  let index = 0;
+
+  for (let i = 0; i < 25; i++) {
+    const div = document.createElement("div");
+    div.className = "cell";
+
+    if (i === 12) {
+      div.innerHTML = "<span>🇫🇷 FREE</span>";
+      div.classList.add("marked");
+      grid.appendChild(div);
+      cells.push(div);
+      continue;
+    }
+
+    div.innerHTML = `<span>${shuffled[index++]}</span>`;
+
+    div.onclick = () => {
+      div.classList.toggle("marked");
+      checkWin();
+    };
+
+    grid.appendChild(div);
+    cells.push(div);
+  }
+}
+
+function checkWin(){
+  const patterns = [
+    [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],
+    [15,16,17,18,19],[20,21,22,23,24],
+    [0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],
+    [3,8,13,18,23],[4,9,14,19,24],
+    [0,6,12,18,24],[4,8,12,16,20]
+  ];
+
+  for (let p of patterns){
+    if (p.every(i => cells[i].classList.contains("marked"))){
+      document.getElementById("overlay").style.display = "flex";
+    }
+  }
+}
+
+function shareBoard(){
+  alert("Screenshot this 📸");
+}
+
+buildBoard();
+</script>
 </html>
