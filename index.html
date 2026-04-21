@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,10 +49,13 @@
     text-decoration: line-through;
   }
 
+  /* CENTER TILE = LOCKED */
   .center {
     background: #d9ecff;
     font-size: 26px;
     cursor: default;
+    pointer-events: none; /* hard lock interaction */
+    border: 2px solid #7fb3ff;
   }
 
   .popup {
@@ -93,7 +95,7 @@
 
 <body>
 
-<h1>✈️ Travel Bingo</h1>
+<h1>🏰 Château Travel Bingo ✨</h1>
 
 <div class="board" id="board"></div>
 
@@ -135,21 +137,17 @@ const items = [
   "First glass of wine at the chateau"
 ];
 
-// shuffle
 function shuffle(a) {
   return a.sort(() => Math.random() - 0.5);
 }
 
 let boardData = shuffle([...items]).slice(0, 24);
-
 let selected = Array(25).fill(false);
 
 const board = document.getElementById("board");
 
-// build board
 function render() {
   board.innerHTML = "";
-
   let itemIndex = 0;
 
   for (let i = 0; i < 25; i++) {
@@ -161,6 +159,7 @@ function render() {
     } else {
       cell.className = "cell";
       cell.innerText = boardData[itemIndex++];
+
       if (selected[i]) cell.classList.add("selected");
 
       cell.onclick = () => {
