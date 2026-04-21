@@ -1,4 +1,7 @@
-/* FULL PAGE CENTERING */
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -6,23 +9,19 @@ body {
 
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-
-  min-height: 100vh;
 }
 
-/* MAIN APP CONTAINER */
 .app {
   width: 100%;
   max-width: 420px;
 
   padding: 16px;
-  box-sizing: border-box;
 
   display: flex;
   flex-direction: column;
-  align-items: center; /* 🔑 centers title + button */
-  gap: 10px;
+  align-items: center;
+
+  gap: 12px;
 }
 
 /* TITLE */
@@ -33,11 +32,10 @@ h1 {
   margin: 10px 0 0;
 }
 
-/* SUBTITLE */
 .sub {
   text-align: center;
   color: #9aaeb8;
-  margin: 0 0 10px;
+  margin: 0;
 }
 
 /* GRID WRAPPER */
@@ -60,15 +58,22 @@ h1 {
   justify-content: center;
 
   padding: 4px;
-  box-sizing: border-box;
   text-align: center;
+  font-size: 0.65rem;
+
+  user-select: none;
+}
+
+/* SELECTED */
+.cell.marked {
+  background: #dbe9f4;
+  text-decoration: line-through;
 }
 
 /* BUTTON */
 button {
   width: 100%;
-  max-width: 320px;   /* 🔑 prevents ugly stretch */
-  margin-top: 10px;
+  max-width: 320px;
 
   padding: 12px;
   border-radius: 14px;
@@ -81,13 +86,17 @@ button {
   display: block;
 }
 
-/* WIN OVERLAY */
+/* WIN SCREEN */
 #overlay {
   position: fixed;
   inset: 0;
   display: none;
   align-items: center;
   justify-content: center;
+
   background: rgba(247,243,236,0.95);
+}
+
+.win-card {
   text-align: center;
 }
