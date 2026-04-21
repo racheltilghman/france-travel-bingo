@@ -1,8 +1,3 @@
-function saveScore() {
-  console.log("Score saved (local test)");
-}
-
-/* 🎯 Bingo Items */
 const items = [
 "Someone says bon voyage",
 "Overpriced airport snack",
@@ -31,36 +26,28 @@ const items = [
 "First glass of wine at the chateau"
 ];
 
-/* 🔀 Shuffle */
-function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
+function shuffle(a){ return a.sort(() => Math.random() - 0.5); }
 
-/* 🎲 Generate board */
 const grid = document.getElementById("grid");
-let shuffled = shuffle([...items]);
 let cells = [];
 
-shuffled.forEach(text => {
+shuffle([...items]).forEach(text => {
   const div = document.createElement("div");
   div.className = "cell";
   div.innerText = text;
 
-  if (text.includes("Free space")) {
-    div.classList.add("marked");
-  }
+  if (text.includes("Free")) div.classList.add("marked");
 
   div.onclick = () => {
     div.classList.toggle("marked");
-    checkBingo();
+    checkWin();
   };
 
   grid.appendChild(div);
   cells.push(div);
 });
 
-/* 🧠 Check win */
-function checkBingo() {
+function checkWin(){
   const patterns = [
     [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],
     [15,16,17,18,19],[20,21,22,23,24],
@@ -71,47 +58,16 @@ function checkBingo() {
 
   for (let p of patterns) {
     if (p.every(i => cells[i].classList.contains("marked"))) {
-      win();
+      document.getElementById("overlay").style.display = "flex";
     }
   }
 }
 
-/* 🥂 Win moment */
-function win() {
-  document.getElementById("bingoOverlay").style.display = "flex";
-  document.getElementById("clink").play();
-  saveScore();
-}
-
-/* 🏆 Save score */
-async function saveScore() {
-  const name = document.getElementById("name").value || "Anonymous";
-
-  await addDoc(collection(db, "scores"), {
-    name: name,
-    time: Date.now()
+function shareBoard(){
+  html2canvas(document.body).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "bingo.png";
+    link.href = canvas.toDataURL();
+    link.click();
   });
 }
-
-/* 🏆 Live leaderboard */
-const q = query(collection(db, "scores"), orderBy("time"));
-
-onSnapshot(q, (snapshot) => {
-  const board = document.getElementById("leaderboard");
-  board.innerHTML = "";
-
-  snapshot.docs.slice(0,10).forEach(doc => {
-    const li = document.createElement("li");
-    li.textContent = doc.data().name;
-    board.appendChild(li);
-  });
-});
-
-/* 📸 Screenshot */
-window.shareBoard = async function() {
-  const canvas = await html2canvas(document.body);
-  const link = document.createElement("a");
-  link.download = "bingo.png";
-  link.href = canvas.toDataURL();
-  link.click();
-};
