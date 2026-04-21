@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Travel Bingo 🇫🇷</title>
+<title>Château Travel Bingo ✨</title>
 
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Inter&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
 <div class="app">
 
-  <h1>✈️ Travel Bingo</h1>
-  <p class="sub">Paris → Tours → Château ✨</p>
+  <h1>✨ Château Travel Bingo ✨</h1>
+  <p class="sub">Paris → Tours → Château</p>
 
   <div class="grid" id="grid"></div>
 
@@ -21,7 +21,16 @@
 
 </div>
 
-<div id="overlay">🥂 Santé ! Bravo !</div>
+<!-- WIN OVERLAY -->
+<div id="overlay">
+  <div class="win-card">
+    <div class="glasses">🥂🥂</div>
+    <div class="text">Santé ! Bravo !</div>
+  </div>
+</div>
+
+<!-- subtle clink sound -->
+<audio id="clink" src="https://www.soundjay.com/glass/glass-clink-1.mp3"></audio>
 
 <script>
 const items = [
@@ -37,7 +46,7 @@ const items = [
 "First bonjour",
 "Bad French pronunciation",
 "Train confusion",
-"Free space 🇫🇷",
+"French café moment",
 "Baguette purchase",
 "Eat a croissant",
 "Tiny coffee shock",
@@ -52,23 +61,36 @@ const items = [
 "First glass of wine at the chateau"
 ];
 
-function shuffle(arr){
-  return arr.sort(() => Math.random() - 0.5);
+function shuffle(a){
+  return a.sort(() => Math.random() - 0.5);
 }
 
 const grid = document.getElementById("grid");
 let cells = [];
 
+/* Build board */
 function buildBoard(){
   const shuffled = shuffle([...items]);
 
-  shuffled.forEach(text => {
+  let index = 0;
+
+  for (let i = 0; i < 25; i++) {
+
     const div = document.createElement("div");
     div.className = "cell";
-    div.innerText = text;
 
-    if (text.includes("Free")) div.classList.add("marked");
+    // CENTER FREE SPACE ALWAYS
+    if (i === 12) {
+      div.innerHTML = "🇫🇷<br>FREE";
+      div.classList.add("free");
+      div.classList.add("marked");
+      cells.push(div);
+      grid.appendChild(div);
+      continue;
+    }
 
+    div.innerText = shuffled[index++];
+    
     div.onclick = () => {
       div.classList.toggle("marked");
       checkWin();
@@ -76,9 +98,10 @@ function buildBoard(){
 
     grid.appendChild(div);
     cells.push(div);
-  });
+  }
 }
 
+/* WIN CHECK */
 function checkWin(){
   const patterns = [
     [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],
@@ -90,13 +113,24 @@ function checkWin(){
 
   for (let p of patterns){
     if (p.every(i => cells[i].classList.contains("marked"))){
-      document.getElementById("overlay").style.display = "flex";
+      win();
     }
   }
 }
 
+/* WIN ANIMATION */
+function win(){
+  document.getElementById("overlay").style.display = "flex";
+  document.getElementById("clink").play();
+
+  // auto hide after a moment
+  setTimeout(() => {
+    document.getElementById("overlay").style.display = "none";
+  }, 3500);
+}
+
 function shareBoard(){
-  alert("Screenshot this 📸");
+  alert("Take a screenshot 📸✨");
 }
 
 buildBoard();
