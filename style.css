@@ -25,14 +25,14 @@ h1 {
 .grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
+  gap: 5px;
 }
 
 .cell {
   width: 100%;
   aspect-ratio: 1 / 1; 
   background: #fffdf9;
-  border-radius: 20px;
+  border-radius: 15px;
 
   display: flex;
   align-items: center;
