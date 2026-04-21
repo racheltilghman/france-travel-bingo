@@ -2,93 +2,143 @@ body {
   margin: 0;
   font-family: 'Inter', sans-serif;
   background: linear-gradient(180deg, #f7f3ec, #f1ebe3);
-  text-align: center;
   color: #3d3d3d;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
 }
 
+/* APP WRAPPER */
 .app {
-  max-width: 420px;
+  max-width: 460px;
   margin: auto;
-  padding: 20px;
+  padding: 16px;
 }
 
+/* TITLE */
 h1 {
   font-family: 'Playfair Display', serif;
   color: #7da2b8;
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+  text-align: center;
 }
 
 .sub {
+  text-align: center;
+  font-size: 0.9rem;
   color: #9aaeb8;
-  font-size: 0.9em;
+  margin-bottom: 12px;
 }
 
+/* GRID — MOBILE RESPONSIVE + EVEN */
 .grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 6px;
-
   width: 100%;
-  max-width: 420px;
   margin: 0 auto;
-  padding: 0 10px;
-  box-sizing: border-box;
 }
 
+/* SQUARE CELLS */
 .cell {
-  aspect-ratio: 1 / 1;   /* 🔑 modern, clean square */
-  width: 100%;
-
+  aspect-ratio: 1 / 1;
   background: #fffdf9;
   border-radius: 12px;
   border: 1px solid #eee;
-
-  position: relative;
-  cursor: pointer;
-}
-
-.cell span {
-  position: absolute;
-  inset: 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   padding: 4px;
-  font-size: clamp(8px, 2.2vw, 11px); /* 🔑 responsive text */
+  box-sizing: border-box;
+
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease;
+}
+
+/* TEXT INSIDE CELL */
+.cell span {
+  font-size: clamp(8px, 2.2vw, 11px);
   text-align: center;
   line-height: 1.1;
+  padding: 2px;
 }
 
-body {
-  -webkit-text-size-adjust: 100%;
-  touch-action: manipulation;
+/* TAP FEEL */
+.cell:active {
+  transform: scale(0.97);
 }
 
+/* MARKED STATE */
 .cell.marked {
   background: #dbe9f4;
   text-decoration: line-through;
 }
 
+/* FREE SPACE */
+.cell.free {
+  background: #f0f4f8;
+  font-weight: bold;
+}
+
+/* BUTTON */
 button {
   width: 100%;
-  margin-top: 15px;
+  margin-top: 14px;
   padding: 12px;
-  border-radius: 16px;
+  border-radius: 14px;
   border: none;
   background: #7da2b8;
   color: white;
+  font-size: 1rem;
 }
 
+/* WIN OVERLAY */
 #overlay {
   position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  font-size:2em;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
   background: rgba(247,243,236,0.95);
+  text-align: center;
+}
+
+.win-card {
+  animation: pop 0.5s ease;
+}
+
+.win-card .glasses {
+  font-size: 3rem;
+  animation: clink 0.8s ease infinite alternate;
+}
+
+.win-card .text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: #7da2b8;
+  margin-top: 10px;
+}
+
+/* ANIMATIONS */
+@keyframes pop {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes clink {
+  from { transform: rotate(-6deg); }
+  to { transform: rotate(6deg); }
+}
+
+/* SMALL SCREENS */
+@media (max-width: 380px) {
+  .cell span {
+    font-size: 8px;
+  }
+
+  .grid {
+    gap: 5px;
+  }
 }
