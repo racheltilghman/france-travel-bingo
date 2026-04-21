@@ -1,31 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, addDoc, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBtL8bcCzZNEfyMHpEfD4jBuALNT3OCGfE",
-  authDomain: "france-bingo.firebaseapp.com",
-  projectId: "france-bingo",
-  storageBucket: "france-bingo.firebasestorage.app",
-  messagingSenderId: "614904484449",
-  appId: "1:614904484449:web:889fb8cb749561df25d020",
-  measurementId: "G-28G9WG9ZCN"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+function saveScore() {
+  console.log("Score saved (local test)");
+}
 
 /* 🎯 Bingo Items */
 const items = [
