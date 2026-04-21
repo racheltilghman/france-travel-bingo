@@ -143,6 +143,7 @@ function shuffle(a) {
 
 let boardData = shuffle([...items]).slice(0, 24);
 let selected = Array(25).fill(false);
+selected[12] = true;
 
 const board = document.getElementById("board");
 
@@ -153,9 +154,11 @@ function render() {
   for (let i = 0; i < 25; i++) {
     const cell = document.createElement("div");
 
-    if (i === 12) {
-      cell.className = "cell center";
-      cell.innerText = "🇫🇷";
+      if (i === 12) {
+  cell.className = "cell center";
+  cell.innerText = "🇫🇷";
+  selected[i] = true;
+}
     } else {
       cell.className = "cell";
       cell.innerText = boardData[itemIndex++];
