@@ -142,8 +142,7 @@ function shuffle(a) {
 }
 
 let boardData = shuffle([...items]).slice(0, 24);
-let selected = Array(25).fill(false);
-selected[12] = true;
+let selected = Array(25).fill(false); selected[12] = true;
 
 const board = document.getElementById("board");
 
@@ -159,9 +158,6 @@ function render() {
   cell.innerText = "🇫🇷";
   selected[i] = true;
 }
-    } else {
-      cell.className = "cell";
-      cell.innerText = boardData[itemIndex++];
 
       if (selected[i]) cell.classList.add("selected");
 
