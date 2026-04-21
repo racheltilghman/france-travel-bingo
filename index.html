@@ -2,31 +2,49 @@
 <html lang="en">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Travel Bingo 🇫🇷</title>
+<title>Travel Bingo</title>
 
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 
 <body>
 
-<h1>✈️ Travel Bingo 🇫🇷</h1>
+<div class="app">
 
-<div class="icons">🌿 🥐 🍾</div>
+  <!-- Header -->
+  <div class="header">
+    <h1>Travel Bingo</h1>
+    <p>Paris → Tours → Château ✨</p>
+  </div>
 
-<input id="name" placeholder="Your name" />
+  <!-- Name -->
+  <input id="name" placeholder="Enter your name" />
 
-<div class="grid" id="grid"></div>
+  <!-- Card -->
+  <div class="card">
+    <div class="grid" id="grid"></div>
+  </div>
 
-<button onclick="shareBoard()">📸 Share your bingo</button>
+  <!-- Actions -->
+  <button onclick="shareBoard()">📸 Share your board</button>
 
-<h3>🏆 Leaderboard</h3>
-<ul id="leaderboard"></ul>
+  <!-- Leaderboard -->
+  <div class="leaderboard-card">
+    <h3>🏆 Leaderboard</h3>
+    <ul id="leaderboard"></ul>
+  </div>
 
+</div>
+
+<!-- Win Overlay -->
 <div id="bingoOverlay">
-  🥂 Santé ! Bravo !
+  <div class="overlay-content">
+    <div class="big">🥂</div>
+    <div class="text">Santé ! Bravo !</div>
+  </div>
 </div>
 
 <audio id="clink" src="https://www.soundjay.com/glass/glass-clink-1.mp3"></audio>
